@@ -12,7 +12,7 @@
 // @downloadURL   https://raw.githubusercontent.com/onenyon/InComming.js/master/InComming.user.js
 // ==/UserScript==
 
-var $ = unsafeWindow.jQuery;
+const $ = jQuery = unsafeWindow.jQuery;
 
 (function($) {
     $.fn.inComming = function(urlRx) {
