@@ -5,15 +5,18 @@
 // @require       http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.js
 // @grant         unsafeWindow
 // @run-at        document-start
-// @updateURL     https://raw.githubusercontent.com/onenyon/InComming.js/master/InComming.js
-// @downloadURL   https://raw.githubusercontent.com/onenyon/InComming.js/master/InComming.js
+// @updateURL     https://raw.githubusercontent.com/onenyon/InComming.js/master/InComming.meta.js
+// @downloadURL   https://raw.githubusercontent.com/onenyon/InComming.js/master/InComming.user.js
 // ==/UserScript==    
 
 var $ = unsafeWindow.jQuery;
 
 (function($){
    $.fn.inComming = function(urlRx) {
+   	$(function() {
+    console.log( "ready!" );
       alert('hello world '+urlRx);
+});
       return this;
    }; 
 })(jQuery);
