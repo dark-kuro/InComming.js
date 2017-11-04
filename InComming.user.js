@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          InComming.js
-// @version       0.5
+// @version       1.0
 // @description   Loads Next Page On a single one.
 // @require       http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.js
 // @grant         unsafeWindow
@@ -37,7 +37,8 @@ function main($) {
 
     function letsJQuery($) {
         $.fn.inComming = function(rule) {
-            var $doc = $url = callback = next = null;
+            var $doc = $url = callback = next = $next = null,
+                $trigger = false;
             $.extend({
                 link: null,
                 content: 'body'
@@ -61,19 +62,24 @@ function main($) {
                         content.appendTo(parent);
 
                         console.log(next, url);
-                        $url = next;
-
-
+                        $next = next;
 
                         obj.load($doc);
+                        $trigger = false;
                     });
                 }
 
-                console.log('INJECTING... to ', this.selectors);
+                console.log('INJECTING... to ', $(this));
 
                 $(window).scroll(function() {
-                    if ($(window).scrollTop() + $(window).height() == $(document).height()) {
-                        nextAjax($url);
+                    if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+                        console.log('NEAR BOTTOM');
+
+                        if (!$trigger) {
+                            $trigger = true;
+                            nextAjax($next);
+                            console.log($trigger);
+                        }
                     }
                 });
 
@@ -84,12 +90,17 @@ function main($) {
                 var parent = $doc.find(rule.content).parent();
 
                 $('<div/>', {
-                    text: $url
-                }).appendTo(parent);
+                    text: $url,
+                    style: 'display:inline-block !important'
+                }).appendTo(parent).css({
+                    background: 'red',
+                    width: '100%',
+                    fontSize: 'xx-large'
+                });
 
                 nextAjax($url);
 
-                console.log(rule.link, $url);
+                console.log("init", rule.link, $url);
 
                 return obj;
             })();
