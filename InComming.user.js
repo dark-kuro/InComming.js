@@ -25,4 +25,4 @@ var $ = unsafeWindow.jQuery;
     };
 })(jQuery);
 
-$('https://yande.re/post').inComming()
+$('https://yande.re/post').inComming('hohohho')
