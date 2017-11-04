@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          InComming.js
-// @version       0.4
+// @version       0.5
 // @description   Loads Next Page On a single one.
 // @require       http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.js
 // @grant         unsafeWindow
