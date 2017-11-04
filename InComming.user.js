@@ -11,14 +11,18 @@
 
 var $ = unsafeWindow.jQuery;
 
-(function($){
-   $.fn.inComming = function(urlRx) {
-   	$(function() {
-    console.log( "ready!" );
-      alert('hello world '+urlRx);
-});
-      return this;
-   }; 
+(function($) {
+    $.fn.inComming = function(urlRx) {
+        $(function() {
+            console.log("ready!");
+            alert('hello world ' + urlRx);
+        });
+        return {
+            load: function(callback) {
+                callback($(document));
+            }
+        };
+    };
 })(jQuery);
 
 $('https://yande.re/post').inComming()
