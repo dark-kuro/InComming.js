@@ -14,7 +14,7 @@
 
 
 function main($) {
-    $('gogogo').inComming({
+    $.inComming({
         link: 'a.next_page',
         content: 'ul#post-list-posts li'
     }).load(function(o) {
@@ -36,7 +36,7 @@ function main($) {
     GM_wait();
 
     function letsJQuery($) {
-        $.fn.inComming = function(rule) {
+        $.inComming = function(rule) {
             var $doc = $url = callback = next = $next = null,
                 $trigger = false;
             $.extend({
