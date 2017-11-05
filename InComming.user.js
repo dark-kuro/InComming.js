@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          InComming.js
-// @version       0.1b
+// @version       0.2b
 // @description   Loads Next Page On a single one.
 // @require       http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.js
 // @grant         unsafeWindow
@@ -32,7 +32,9 @@ function main($) {
 
     function letsJQuery($) {
         $.fn.inComming = function(callback) {
-            console.log(this, '<=== this is the object');
+            var next = this.link,
+                content = this.content || 'body';
+            console.log(next, content, '<=== this is the object');
         };
         main($);
     }
