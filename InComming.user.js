@@ -61,6 +61,15 @@ function main($) {
 
                         content.appendTo(parent);
 
+                        $('<div/>', {
+                            text: next,
+                            style: 'display:inline-block !important'
+                        }).appendTo(parent).css({
+                            background: 'red',
+                            width: '100%',
+                            fontSize: 'xx-large'
+                        });
+
                         console.log(next, url);
                         $next = next;
 
