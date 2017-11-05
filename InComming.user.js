@@ -36,45 +36,49 @@ function main($) {
 
     function letsJQuery($) {
         $.fn.inComming = function(callback) {
-            if (!this.link) return;
-            var $this = this,
-                $trigger = false;
-            var select = $this.select || 'body';
-            var getHref = function(doc) {
-                return doc.find($this.link).attr('href');
-            }
+            $(function() {
 
-            var $doc = $(document),
-                $parent = $doc.find(select).parent(),
-                $url = null,
-                $nextLoad = function(html) {
-                    html = $(html);
-                    next = getHref(html);
-                    content = html.find(select);
-                    content.appendTo($parent);
-
-                    console.log(next, url);
-                    $next = next;
-
+                if (!this.link) return;
+                var $this = this,
                     $trigger = false;
-                    callback($doc);
-                };
+                var select = $this.select || 'body';
+                var getHref = function(doc) {
+                    return doc.find($this.link).attr('href');
+                }
 
-            if (typeof $this.link === 'function') $url = $this.link($doc);
-            else $url = getHref($this.link);
+                var $doc = $(document),
+                    $parent = $doc.find(select).parent(),
+                    $url = null,
+                    $nextLoad = function(html) {
+                        html = $(html);
+                        next = getHref(html);
+                        content = html.find(select);
+                        content.appendTo($parent);
 
-            $('<div/>', {
-                text: $url,
-                style: 'display:inline-block !important'
-            }).appendTo($parent).css({
-                background: 'red',
-                width: '100%',
-                textAlign:'center',
-                fontSize: 'xx-large'
-            });
+                        console.log(next, url);
+                        $next = next;
 
-            callback($doc);
-            $.get($url, nextLoad);
+                        $trigger = false;
+                        callback($doc);
+                    };
+
+                if (typeof $this.link === 'function') $url = $this.link($doc);
+                else $url = getHref($this.link);
+
+                $('<div/>', {
+                    text: $url,
+                    style: 'display:inline-block !important'
+                }).appendTo($parent).css({
+                    background: 'red',
+                    width: '100%',
+                    textAlign: 'center',
+                    fontSize: 'xx-large'
+                });
+
+                callback($doc);
+                $.get($url, nextLoad);
+
+            })
         };
         main($);
     }
