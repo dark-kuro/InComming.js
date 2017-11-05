@@ -12,10 +12,11 @@
 // @downloadURL   https://raw.githubusercontent.com/onenyon/InComming.js/master/InComming.user.js
 // ==/UserScript==
 
-
-
 function main($) {
-    $({}).inComming();
+    $({
+        link: 'a.next_page',
+        content: 'ul#post-list-posts li'
+    }).inComming();
 }
 
 (function() {
@@ -31,8 +32,7 @@ function main($) {
 
     function letsJQuery($) {
         $.fn.inComming = function(callback) {
-            console.log(this)
-
+            console.log(this, '<=== this is the object');
         };
         main($);
     }
