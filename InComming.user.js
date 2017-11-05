@@ -15,8 +15,12 @@
 function main($) {
     $({
         link: 'a.next_page',
-        content: 'ul#post-list-posts li'
-    }).inComming();
+        select: 'ul#post-list-posts li'
+    }).inComming(function(o) {
+        o.find('.javascript-hide').removeClass();
+        o.find('img[width][height]').removeAttr("width height");
+        o.find('li[style*="width"], .inner[style]').removeAttr("style");
+    });
 }
 
 (function() {
@@ -32,9 +36,45 @@ function main($) {
 
     function letsJQuery($) {
         $.fn.inComming = function(callback) {
-            var next = this.link,
-                content = this.content || 'body';
-            console.log(next, content, '<=== this is the object');
+            if (!this.link) return;
+            var $this = this,
+                $trigger = false;
+            var select = $this.select || 'body';
+            var getHref = function(doc) {
+                return doc.find($this.link).attr('href');
+            }
+
+            var $doc = $(document),
+                $parent = $doc.find(select).parent(),
+                $url = null,
+                $nextLoad = function(html) {
+                    html = $(html);
+                    next = getHref(html);
+                    content = html.find(select);
+                    content.appendTo($parent);
+
+                    console.log(next, url);
+                    $next = next;
+
+                    $trigger = false;
+                    callback($doc);
+                };
+
+            if (typeof $this.link === 'function') $url = $this.link($doc);
+            else $url = getHref($this.link);
+
+            $('<div/>', {
+                text: $url,
+                style: 'display:inline-block !important'
+            }).appendTo($parent).css({
+                background: 'red',
+                width: '100%',
+                textAlign:'center',
+                fontSize: 'xx-large'
+            });
+
+            callback($doc);
+            $.get($url, nextLoad);
         };
         main($);
     }
