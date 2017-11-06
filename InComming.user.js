@@ -8,6 +8,8 @@
 // @match         http://*
 // @match         https://*
 // @include       https://yande.re/post*
+// @include       http://konachan.com/post*
 // @updateURL     https://raw.githubusercontent.com/onenyon/InComming.js/master/InComming.user.js
 // @downloadURL   https://raw.githubusercontent.com/onenyon/InComming.js/master/InComming.user.js
 // ==/UserScript==
+
