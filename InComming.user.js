@@ -94,7 +94,7 @@ function run($) {
                 }).append($('<a>', {
                     text: $next,
                     title: 'The Page',
-                    href: '$next'
+                    href: $next
                 }));
 
 
