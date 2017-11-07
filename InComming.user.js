@@ -4,7 +4,10 @@
 // @description   Loads Next Page On a single one.
 // @grant         unsafeWindow
 // @run-at        document-start
+// @match         http://*
+// @match         https://*
 // @include       https://yande.re/post*
+// @include       http://danbooru.donmai.us/posts*
 // @include       http://konachan.*/post*
 // @include       https://gelbooru.com/index.php?page=post&s=list*
 // @require       https://code.jquery.com/jquery-3.2.1.min.js
@@ -13,7 +16,12 @@
 // ==/UserScript==
 
 function run($) {
-    if (/gelbooru/.test(location.href)) {
+    if (/danbooru/.test(location.href)) {
+        $({
+            link: 'a[rel="next"]',
+            select: "article"
+        }).inComming();
+    } else if (/gelbooru/.test(location.href)) {
         $({
             link: 'a[alt="next"]',
             select: "div.thumbnail-preview"
@@ -25,15 +33,16 @@ function run($) {
 
         });
         return;
+    } else {
+        $({
+            link: 'a.next_page',
+            select: 'ul#post-list-posts li'
+        }).inComming(function(o) {
+            o.find('.javascript-hide').removeClass();
+            o.find('img[width][height]').removeAttr("width height");
+            o.find('li[style*="width"], .inner[style]').removeAttr("style");
+        });
     }
-    $({
-        link: 'a.next_page',
-        select: 'ul#post-list-posts li'
-    }).inComming(function(o) {
-        o.find('.javascript-hide').removeClass();
-        o.find('img[width][height]').removeAttr("width height");
-        o.find('li[style*="width"], .inner[style]').removeAttr("style");
-    });
 }
 
 (function(plugin) {
@@ -78,7 +87,7 @@ function run($) {
                 content = $(html).find($select);
             $doc = new Doc(document);
 
-            console.log(content,'<<<=============');
+            console.log(content, '<<<=============');
 
             content.appendTo($parent);
             console.log(next, url);
