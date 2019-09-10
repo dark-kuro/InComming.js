@@ -1,11 +1,10 @@
 // ==UserScript==
 // @name          InComming.js
-// @version       2.0
+// @version       2.1
 // @description   Loads Next Page On A Single One.
 // @grant         unsafeWindow
 // @run-at        document-start
-// @match         http://*
-// @match         https://*
+// @include       *://nhentai.net/*
 // ==/UserScript==
 
 let container, nextURL, latch = false
@@ -38,6 +37,7 @@ function run(host){
 
         items.forEach(i=>{
             var img = i.querySelector('img[data-src][is="lazyload-image"]');
+            if(!img)return;
             img.src = img.getAttribute('data-src');
             container.appendChild(i);
         })
@@ -47,7 +47,10 @@ function run(host){
 
         nextURL = doc.querySelector(host.nextURL).href;
         latch=false;
-    }).catch(e=>{latch = false;})
+    }).catch(e=>{
+        console.error('Incomming.js ERROR', e)
+        latch = false;
+    })
     latch = false
 }
 
