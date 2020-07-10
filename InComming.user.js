@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          InComming.js
-// @version       2.1
+// @version       2.2
 // @description   Loads Next Page On A Single One.
 // @grant         unsafeWindow
 // @run-at        document-start
@@ -17,26 +17,31 @@ const config = {
 };
 const host = window.location.host,
       fetchHTML = url =>fetch(url).then(x=>x.text()).then(html=>new DOMParser().parseFromString(html, 'text/html'));
+const createNextPageButton = (nextURL)=>{
+      const link = document.createElement('a');
+            link.href = nextURL;
+            link.innerText = nextURL;
+            link.style.width = '100%';
+            link.style.display = 'inline-block';
+            link.style.fontSize = '30px';
+            link.style.backgroundColor = 'crimson';
+        return link;
+    };
+
 function run(host){
     if(!nextURL){
         nextURL = document.querySelector(host.nextURL).href
     }
 
     fetchHTML(nextURL).then(doc=>{
-        var items = doc.querySelectorAll(host.mainCSS + ' > *');
+        var items = doc.querySelectorAll(host.mainCSS + ' > div.gallery');
         container = document.querySelector(host.mainCSS);
+        const nextUrlBtn = createNextPageButton(nextURL)
 
-        var urlBtn = document.createElement('a');
-        urlBtn.href = nextURL;
-        urlBtn.innerText = nextURL;
-        urlBtn.style.width = '100%';
-        urlBtn.style.display = 'inline-block';
-        urlBtn.style.fontSize = '30px';
-        urlBtn.style.backgroundColor = 'crimson';
-        container.appendChild(urlBtn)
+        container.appendChild(nextUrlBtn)
 
         items.forEach(i=>{
-            var img = i.querySelector('img[data-src][is="lazyload-image"]');
+            var img = i.querySelector('img.lazyload[data-src]');
             if(!img)return;
             img.src = img.getAttribute('data-src');
             container.appendChild(i);
@@ -54,13 +59,16 @@ function run(host){
     latch = false
 }
 
+const isScrollAtEnd = ()=>{
+        const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+        const scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
+        const scrolledToBottom = (scrollTop + window.innerHeight) >= scrollHeight-1;
+        return scrolledToBottom;
+};
+
 (()=>{
     window.addEventListener("scroll", () => {
-        var scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-        var scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
-        var scrolledToBottom = (scrollTop + window.innerHeight) >= scrollHeight-1;
-
-        if(scrolledToBottom){
+        if(isScrollAtEnd()){
             if(!latch){
                 latch = true;
                 run(config[host]);
